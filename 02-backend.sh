@@ -40,7 +40,7 @@ cd /app  &>>$LOG_FILE
 npm install  &>>$LOG_FILE
 VALIDATE $? "install the libries and dependies"
 
-cp /home/ec2-user/expense/backend.service   /etc/systemd/system/backend.service  &>>$LOGFILE
+cp /home/ec2-user/expense/backend.service   /etc/systemd/system/backend.service  &>>$LOG_FILE
 
 systemctl daemon-reload   &>>$LOG_FILE
 VALIDATE $? "realod the code"
