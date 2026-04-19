@@ -3,6 +3,7 @@ set -e
 error_handling(){
     echo "occured at line number $1: error command:$2"
 }
+trap 'error_handling ${LINENO} "$BASH_COMMAND"' ERR
 
 source ./common.sh
 CHECK_ROOT
