@@ -79,7 +79,16 @@ VALIDATE $? "start the backend"
 systemctl enable backend    &>>$LOG_FILE
 VALIDATE $? "enable backend"
 
-echo -e "$G  bakend sever is created sucessfully $N"
+dnf install mysql -y   &>>$LOG_FILE
+VALIDATE $? "install mysqld"
+
+mysql -h db.nsrikanth.online -uroot -pExpenseApp@1 < /app/schema/backend.sql  &>>$LOG_FILE
+VALIDATE $? "load the schema"
+
+systemctl restart backend  &>>$LOG_FILE
+VALIDATE $? "restart backend"
+
+echo -e "$G  bakend sever is created sucessfully $N"  &>>$LOG_FILE
 
 
 
