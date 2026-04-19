@@ -41,7 +41,6 @@ id expense
 if [ $? -eq 0 ]
 then 
     echo -e "user already created ... $Y skipping $N"
-    exit 1
 else
     useradd expense   &>>$LOG_FILE
     VALIDATE $? "create the useradd"
