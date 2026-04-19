@@ -20,3 +20,5 @@ else
     echo -e "root password alredy setup ......... $Y skipping $N"
 fi
 
+echo -e "db server created successfully"
+
