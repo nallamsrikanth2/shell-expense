@@ -8,7 +8,7 @@ trap 'error_handling ${LINENO} "$BASH_COMMAND"' ERR
 source ./common.sh
 CHECK_ROOT
 
-dnf install mysql-serverr -y  &>>$LOG_FILE
+dnf install mysql-server -y  &>>$LOG_FILE
 #VALIDATE $? "install the mysql server"
 
 systemctl enable mysqld   &>>$LOG_FILE
