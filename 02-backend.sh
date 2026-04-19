@@ -55,6 +55,7 @@ VALIDATE $? "download the backend code"
 
 cd /app   &>>$LOG_FILE
 VALIDATE $? "move to cd app"
+
 rm -rf /app/*  &>>LOG_FILE
 VALIDATE $? "remove everything in app"
 
