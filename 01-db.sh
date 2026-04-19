@@ -1,32 +1,6 @@
 #!/bin/bash
 
-USERID=$(id -u)
-TIMESTAP=$(date +%F-%H-%M-%S)
-SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
-LOG_FILE=/tmp/$SCRIPT_NAME-$TIMESTAP.log
-
-R="\e[31m"
-G="\e[32m"
-N="\e[0m"
-Y="\e[33m"
-
-VALIDATE(){
-    if [ $? -ne 0 ]
-    then
-        echo -e "$R $2 .... failue $N"
-        exit 1
-    else
-        echo -e "$G $2 .... Sucsess $N"
-    fi
-}
-
-if [ $USERID -ne 0 ]
-then
-    echo -e " $R please run inside the root user $N"
-    exit 1
-else
-    echo -e " $G you are in root user $N"
-fi
+CHECK_ROOT
 
 dnf install mysql-server -y  &>>$LOG_FILE
 VALIDATE $? "install the mysql server"
