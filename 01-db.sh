@@ -13,10 +13,10 @@ Y="\e[33m"
 VALIDATE(){
     if [ $? -ne 0 ]
     then
-        echo "$2 .... failue"
+        echo -e "$R $2 .... failue $N"
         exit 1
     else
-        echo "$2 .... Sucsess"
+        echo -e "$G $2 .... Sucsess $N"
     fi
 }
 
@@ -28,19 +28,19 @@ else
     echo -e " $G you are in root user $N"
 fi
 
-dnf install mysql-server -y
+dnf install mysql-server -y  &>>$LOG_FILE
 VALIDATE $? "install the mysql server"
 
-systemctl enable mysqld
+systemctl enable mysqld   &>>$LOG_FILE
 VALIDATE $? "enable mysqld"
 
-systemctl start mysqld
+systemctl start mysqld     &>>$LOG_FILE
 VALIDATE $? "start the mysqld"
 
-mysql -h db.nsrikanth.online -uroot -pExpenseApp@1 -e 'showdatabases;'
+mysql -h db.nsrikanth.online -uroot -pExpenseApp@1 -e 'showdatabases;'   &>>$LOG_FILE
 if [ $? -ne 0 ]
 then
-    echo "mysql_secure_installation --set-root-pass ExpenseApp@1"
+    mysql_secure_installation --set-root-pass ExpenseApp@1"
     VALIDATE $? "setup the root password"
 else
     echo -e "root password alredy setup ......... $Y skipping $N"
