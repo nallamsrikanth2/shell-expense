@@ -2,7 +2,7 @@
 
 USERID=$(ID -U)
 TIMESTAMP=$(date +%F-%H-%M-%S)
-SCRIPT_NAME=$( echo $o | cut -d "-" -f1)
+SCRIPT_NAME=$( echo $o | cut -d "." -f1)
 LOG_FILE=/tmp/$SCRIPT_NAME-$TIMESTAMP.log
 
 R="\e[31m"
@@ -13,19 +13,19 @@ Y="\e[33m"
 VALIDATE(){
     if [ $? -ne 0 ]
     then
-        echo "$2 ... failure"
+        echo -e "$2 ... $R failure $N"
         exit 1
     else
-        echo "$2 ... Sucess"
+        echo -e "$2 ... $G Sucess $N"
     fi
 }
 
 if [ $USERID -ne 0 ]
 then 
-    echo "Please run the script inside the root user"
+    echo -e "$R Please run the script inside the root user $N"
     exit 1
 else
-    echo "you are in root user"
+    echo -e "$G you are in root user $N"
 fi
 
 dnf module disable nodejs -y  &>>$LOG_FILE
@@ -40,7 +40,7 @@ VALIDATE $? "install nodejs"
 id expense
 if [ $? -eq 0 ]
 then 
-    echo "user already created ... $Y skipping $N"
+    echo -e "user already created ... $Y skipping $N"
     exit 1
 else
     useradd expense   &>>$LOG_FILE
