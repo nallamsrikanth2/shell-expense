@@ -37,7 +37,7 @@ VALIDATE $? "enable mysqld"
 systemctl start mysqld     &>>$LOG_FILE
 VALIDATE $? "start the mysqld"
 
-mysql -h db.nsrikanth.online -uroot -pExpenseApp@1 -e 'showdatabases;'   &>>$LOG_FILE
+mysql -h db.nsrikanth.online -uroot -pExpenseApp@1 -e 'show databases;'   &>>$LOG_FILE
 if [ $? -ne 0 ]
 then
     mysql_secure_installation --set-root-pass ExpenseApp@1"
