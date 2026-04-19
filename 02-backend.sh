@@ -68,7 +68,7 @@ VALIDATE $? "move to cd"
 npm install   &>>$LOG_FILE
 VALIDATE $? "npm install"
 
-cp /home/ec2-user/shell-expense /etc/systemd/system/backend.service   &>>$LOG_FILE
+cp /home/ec2-user/shell-expense/backend.service /etc/systemd/system/backend.service   &>>$LOG_FILE
 VALIDATE $? "copy the code"
 
 systemctl daemon-reload   &>>$LOG_FILE
