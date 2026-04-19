@@ -28,68 +28,60 @@ else
     echo -e "$G you are in root user $N"
 fi
 
-dnf module disable nodejs -y  &>>$LOG_FILE
-VALIDATE $? "disable the nodejs"
+dnf module disable nodejs -y  &>>$LOGFILE
+VALIDATE $? "disable nodejs"
 
-dnf module enable nodejs:20 -y  &>>$LOG_FILE
-VALIDATE $? "enable the nodejs"
+dnf module enable nodejs:20 -y  &>>$LOGFILE
+VALIDATE $? "enable nodejs"
 
-dnf install nodejs -y    &>>$LOG_FILE
+dnf install nodejs -y   &>>$LOGFILE
 VALIDATE $? "install nodejs"
 
 id expense
-if [ $? -eq 0 ]
-then 
-    echo -e "user already created ... $Y skipping $N"
+if [ $? -ne 0 ]
+then
+    useradd expense
+    VALIDATE $? "create user"
 else
-    useradd expense   &>>$LOG_FILE
-    VALIDATE $? "create the useradd"
+    echo -e "user already created .... $Y Skipping $N"
 fi
 
-mkdir -p /app   &>>$LOG_FILE
-VALIDATE $? "creating the directory app"
+mkdir -p /app  &>>$LOGFILE
+VALIDATE $? "create the app directory"
 
-curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip  &>>$LOG_FILE
+curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip   &>>$LOGFILE
 VALIDATE $? "download the backend code"
 
-cd /app   &>>$LOG_FILE
-VALIDATE $? "move to cd app"
+cd /app  &>>$LOGFILE
+VALIDATE $? "move to app directory"
 
-rm -rf /app/*  &>>LOG_FILE
-VALIDATE $? "remove everything in app"
+rm -rf /app/*  &>>$LOGFILE
+VALIDATE $? "remove the files in app directory"
 
-unzip /tmp/backend.zip  &>>$LOG_FILE
-VALIDATE $? "unzip the file"
+unzip /tmp/backend.zip  &>>$LOGFILE
+VALIDATE $? "unzip the backend code"
 
-cd /app   &>>$LOG_FILE
-VALIDATE $? "move to cd"
+cd /app  &>>$LOGFILE
 
-npm install   &>>$LOG_FILE
-VALIDATE $? "npm install"
+npm install  &>>$LOGFILE
+VALIDATE $? "install the libries and dependies"
 
-cp /home/ec2-user/shell-expense/backend.service /etc/systemd/system/backend.service   &>>$LOG_FILE
-VALIDATE $? "copy the code"
+cp /home/ec2-user/expense/backend.service   /etc/systemd/system/backend.service  &>>$LOGFILE
 
-systemctl daemon-reload   &>>$LOG_FILE
-VALIDATE $? "reload the code"
+systemctl daemon-reload   &>>$LOGFILE
+VALIDATE $? "realod the code"
 
-systemctl start backend    &>>$LOG_FILE
+systemctl start backend   &>>$LOGFILE
 VALIDATE $? "start the backend"
 
-systemctl enable backend    &>>$LOG_FILE
-VALIDATE $? "enable backend"
+systemctl enable backend   &>>$LOGFILE
+VALIDATE $? "enable the code"
 
-dnf install mysql -y   &>>$LOG_FILE
-VALIDATE $? "install mysqld"
+dnf install mysql -y  &>>$LOGFILE
+VALIDATE $? "install mysql"
 
-mysql -h db.nsrikanth.online -uroot -pExpenseApp@1 < /app/schema/backend.sql  &>>$LOG_FILE
-VALIDATE $? "load the schema"
+mysql -h db.nsrikanth.online -uroot -pExpenseApp@1 < /app/schema/backend.sql  &>>$LOGFILE
+VALIDATE $? "load the mysql schema"
 
-systemctl restart backend  &>>$LOG_FILE
-VALIDATE $? "restart backend"
-
-echo -e "$G  bakend sever is created sucessfully $N"  &>>$LOG_FILE
-
-
-
-
+systemctl restart backend   &>>$LOGFILE
+VALIDATE $? "restart backend server"
